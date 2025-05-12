@@ -7,7 +7,6 @@ import android.content.pm.PackageManager
 import android.graphics.ImageFormat
 import android.graphics.SurfaceTexture
 import android.hardware.camera2.*
-import android.hardware.camera2.params.TonemapCurve
 import android.media.ImageReader
 import android.os.Build
 import android.os.Bundle
@@ -160,20 +159,6 @@ class MainActivity : ComponentActivity() {
         }
     }
 
-    // Utility function to create a custom tonemap curve
-    private fun createCustomTonemapChannelData(characteristics: CameraCharacteristics): FloatArray? {
-        val maxCurvePoints = characteristics.get(CameraCharacteristics.TONEMAP_MAX_CURVE_POINTS) ?: return null
-        val curve = FloatArray(maxCurvePoints * TonemapCurve.POINT_SIZE)
-
-        for (i in 0 until maxCurvePoints) {
-            val x = i.toFloat() / (maxCurvePoints - 1)
-            val y = Math.pow(x.toDouble(), 1.0 / 2.2).toFloat() // Example gamma correction
-            curve[i * 2] = x
-            curve[i * 2 + 1] = y
-        }
-        return curve
-    }
-
     private fun createCameraPreviewSession() {
         try {
             if (!::textureView.isInitialized) {
@@ -202,21 +187,6 @@ class MainActivity : ComponentActivity() {
 
             previewRequestBuilder = currentCameraDevice.createCaptureRequest(CameraDevice.TEMPLATE_PREVIEW)
             previewRequestBuilder.addTarget(previewSurface)
-
-            val channelData = createCustomTonemapChannelData(cameraCharacteristics)
-            if (channelData != null) {
-                val customTonemapCurve = TonemapCurve(
-                    channelData,
-                    channelData.copyOf(),
-                    channelData.copyOf()
-                )
-                previewRequestBuilder.set(CaptureRequest.TONEMAP_MODE, CameraMetadata.TONEMAP_MODE_CONTRAST_CURVE)
-                previewRequestBuilder.set(CaptureRequest.TONEMAP_CURVE, customTonemapCurve)
-                Log.d("MainActivity", "Applied custom tonemap curve to CaptureRequest.")
-            } else {
-                Log.w("MainActivity", "Failed to generate custom tonemap channel data. Using default tonemapping.")
-                previewRequestBuilder.set(CaptureRequest.TONEMAP_MODE, CameraMetadata.TONEMAP_MODE_FAST)
-            }
 
             val surfaces = mutableListOf(previewSurface, imageReaderSurface)
 
