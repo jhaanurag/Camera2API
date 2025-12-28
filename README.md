@@ -2,7 +2,7 @@
 - log gamma curve
 - quadratic bezier gamma curve
 - manual settings
-- experimental ui
+- experimental ui custom images as buttons and custom sfx for clicking to create one of kind camera
 
 ## TODO
 - customizable: fonts, size, placement, bg-images/gif/vids or anywhere
