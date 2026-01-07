@@ -6,5 +6,6 @@
 
 ## TODO
 - customizable: fonts, size, placement, bg-images/gif/vids or anywhere
-- ai suggestions: photography trainer,composition,posing
+- ai suggestions: photography trainer, composition, posing
+- ai live editing photo/ nanobanana
 - gallery access, LUTs/Looks/Social
