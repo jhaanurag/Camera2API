@@ -1,6 +1,7 @@
 # features
 - log gamma curve
 - quadratic bezier gamma curve
+- no/minimal processing toggles for "raw" look without real RAW files and sizes
 - manual settings
 - experimental ui custom images as buttons and custom sfx for clicking to create one of kind camera
 
